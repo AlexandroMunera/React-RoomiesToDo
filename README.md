@@ -1,6 +1,6 @@
 https://roomiestodo.web.app/
 
-![Test Image 1](Screenshot_1.png)
+![Test Image 1](Screenshot_1.jpg)
 
 ## Available Scripts
 

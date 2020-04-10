@@ -1,0 +1,25 @@
+{
+   "todos" : [
+       {
+           "title" : "Tarea 1",
+           "responsible" : "Xandro",
+           "description" : " descri 1",
+           "priority"    : "low"
+
+       },
+       {
+        "title" : "Tarea 2",
+        "responsible" : "Tania",
+        "description" : " descri 2",
+        "priority"    : "medium"
+
+    },
+    {
+        "title" : "Tarea 3",
+        "responsible" : "Isra",
+        "description" : " descri 3",
+        "priority"    : "high"
+
+    }
+   ]
+}

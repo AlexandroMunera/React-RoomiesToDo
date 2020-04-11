@@ -8,7 +8,8 @@ class FormCreateTask extends Component {
             title: '',
             responsible: '',
             description: '',
-            priority: 'higth'
+            priority: 'higth',
+            isDelete: false
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -17,8 +18,6 @@ class FormCreateTask extends Component {
 
     handleInputChange(e) {
         const { value, name } = e.target;
-        console.log('value', value);
-        console.log('name', name);
         this.setState({
             [name]: value
         });
@@ -26,13 +25,17 @@ class FormCreateTask extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        this.props.onAddTodo(this.state);
-        this.setState({
-            title: '',
-            responsible: '',
-            description: '',
-            priority: 'low'
-        });
+
+        if (this.state.title != '' && this.state.responsible != '' && this.state.description != '') {
+        
+            this.props.onAddTodo(this.state);
+            this.setState({
+                title: '',
+                responsible: '',
+                description: '',
+                priority: 'low'
+            });
+        }
     }
     render() {
         return (

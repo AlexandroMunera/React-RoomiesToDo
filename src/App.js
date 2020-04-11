@@ -34,20 +34,35 @@ class App extends Component {
 
     this.db.on('child_added', snap => {
 
-      todos.push({
-        id: snap.key,
-        title: snap.val().title,
-        responsible: snap.val().responsible,
-        priority: snap.val().priority,
-        description: snap.val().description,
+      if (!snap.val().isDelete) {
+        todos.push({
+          id: snap.key,
+          title: snap.val().title,
+          responsible: snap.val().responsible,
+          priority: snap.val().priority,
+          description: snap.val().description,
+          isDelete: snap.val().isDelete
 
-      })
+        })
 
-      this.setState({ todos });
+        this.setState({ todos });
+      }
 
     });
 
-    this.db.on('child_removed', snap => {
+    // this.db.on('child_removed', snap => {
+
+    //   for (let i = 0; i < todos.length; i++) {
+    //     if (todos[i].id === snap.key) {
+    //       todos.splice(i, 1);
+    //     }
+    //   }
+
+    //   this.setState({ todos })
+
+    // });
+
+    this.db.on('child_changed', snap => {
 
       for (let i = 0; i < todos.length; i++) {
         if (todos[i].id === snap.key) {
@@ -58,6 +73,9 @@ class App extends Component {
       this.setState({ todos })
 
     });
+
+
+
   };
 
 
@@ -72,9 +90,17 @@ class App extends Component {
 
   }
 
-  removeTodo(id) {
+  removeTodo(task) {
 
-    this.db.child(id).remove();
+    // this.db.child(id).remove();
+
+    this.app.database().ref('tasks/' + task.id).set({
+      title: task.title,
+      responsible: task.responsible,
+      description: task.description,
+      priority: task.priority,
+      isDelete: true
+    });
 
   }
 
@@ -101,7 +127,7 @@ class App extends Component {
               <Popconfirm title="Are you sure?"
                 okText="Yes"
                 cancelText="No"
-                onConfirm={this.removeTodo.bind(this, task.id)}
+                onConfirm={this.removeTodo.bind(this, task)}
               >
                 <button
                   className="btn btn-danger"

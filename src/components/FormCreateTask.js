@@ -26,7 +26,7 @@ class FormCreateTask extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        if (this.state.title != '' && this.state.responsible != '' && this.state.description != '') {
+        if (this.state.title !== '' && this.state.responsible !== '' && this.state.description !== '') {
         
             this.props.onAddTodo(this.state);
             this.setState({

@@ -1,4 +1,4 @@
-
+//test
 
 export const DB_CONFIG = {
     apiKey: "AIzaSyCf341K4I0d1cqREJr5YrgKBWCiiAKUYCo",
@@ -9,4 +9,6 @@ export const DB_CONFIG = {
     messagingSenderId: "446417154006",
     appId: "1:446417154006:web:6188bc26cf214d0bb7fe77",
     measurementId: "G-Z9TQ2DD5F9"
+
+
   }; 

@@ -8,6 +8,8 @@ import FormCreateTask from './components/FormCreateTask';
 import firebase from 'firebase/app';
 import { DB_CONFIG } from './config/config';
 import 'firebase/database';
+import { Popconfirm } from 'antd';
+import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 
 class App extends Component {
 
@@ -48,12 +50,12 @@ class App extends Component {
     this.db.on('child_removed', snap => {
 
       for (let i = 0; i < todos.length; i++) {
-        if (todos[i].id === snap.key){
-          todos.splice(i,1);
+        if (todos[i].id === snap.key) {
+          todos.splice(i, 1);
         }
       }
 
-      this.setState({todos})
+      this.setState({ todos })
 
     });
   };
@@ -73,14 +75,6 @@ class App extends Component {
   removeTodo(id) {
 
     this.db.child(id).remove();
-
-    // if (window.confirm('Esta seguro de eliminar la tarea ?')) {
-    //   this.setState({
-    //     todos: this.state.todos.filter((t, i) => {
-    //       return i !== index
-    //     })
-    //   });
-    // }
 
   }
 
@@ -103,12 +97,19 @@ class App extends Component {
             </div>
 
             <div className="card-footer">
-              <button
-                className="btn btn-danger"
-                onClick={this.removeTodo.bind(this, task.id)}
+
+              <Popconfirm title="¿Está seguro？"
+                okText="Si"
+                cancelText="No"
+                onConfirm={this.removeTodo.bind(this, task.id)}
               >
-                Delete
-              </button>
+                <button
+                  className="btn btn-danger"
+                >
+                  Delete
+                </button>
+
+              </Popconfirm>
             </div>
           </div>
         </div>

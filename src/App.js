@@ -2,45 +2,94 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { todos } from './todos.json';
+// import { todos } from './todos.json';
 import FormCreateTask from './components/FormCreateTask';
+// import firebase from 'firebase';
+import firebase from 'firebase/app';
+import { DB_CONFIG } from './config/config';
+import 'firebase/database';
 
 class App extends Component {
 
   constructor() {
     super();
     this.state = {
-      todos: todos
+      //todos: todos
+      todos: [
+
+      ]
     }
+
+    this.app = !firebase.apps.length ? firebase.initializeApp(DB_CONFIG) : firebase.app();
+    this.db = this.app.database().ref().child('tasks')
+
     this.handleAddTodo = this.handleAddTodo.bind(this);
   }
 
+  componentDidMount = () => {
+
+    const { todos } = this.state;
+
+    this.db.on('child_added', snap => {
+
+      todos.push({
+        id: snap.key,
+        title: snap.val().title,
+        responsible: snap.val().responsible,
+        priority: snap.val().priority,
+        description: snap.val().description,
+
+      })
+
+      this.setState({ todos });
+
+    });
+
+    this.db.on('child_removed', snap => {
+
+      for (let i = 0; i < todos.length; i++) {
+        if (todos[i].id === snap.key){
+          todos.splice(i,1);
+        }
+      }
+
+      this.setState({todos})
+
+    });
+  };
+
+
   handleAddTodo(task) {
 
-    this.setState({
-      todos: [...this.state.todos, task]
-    });
+    // this.setState({
+    //   todos: [...this.state.todos, task]
+    // });
+
+    // this.db.push().set({title:task.title})
+    this.db.push().set(task)
 
   }
 
-  removeTodo(index) {
+  removeTodo(id) {
 
-    if (window.confirm('Esta seguro de eliminar la tarea ?')) {
-      this.setState({
-        todos : this.state.todos.filter((t,i) => {
-          return i !== index
-        })
-      });
-    }
+    this.db.child(id).remove();
 
+    // if (window.confirm('Esta seguro de eliminar la tarea ?')) {
+    //   this.setState({
+    //     todos: this.state.todos.filter((t, i) => {
+    //       return i !== index
+    //     })
+    //   });
+    // }
 
   }
 
   render() {
+
     //Procesar los datos
-    const tareas = this.state.todos.map((task, i) => {
+    const tareas = this.state.todos.map((task) => {
       return (
-        <div className="col-md-4" key={task.title}>
+        <div className="col-md-4" key={task.id}>
           <div className="card mt-4" >
             <div className="card-header">
               <h3> {task.title} </h3>
@@ -56,7 +105,7 @@ class App extends Component {
             <div className="card-footer">
               <button
                 className="btn btn-danger"
-                onClick={this.removeTodo.bind(this, i)}
+                onClick={this.removeTodo.bind(this, task.id)}
               >
                 Delete
               </button>

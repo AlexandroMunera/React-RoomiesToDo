@@ -98,7 +98,7 @@ class App extends Component {
 
             <div className="card-footer">
 
-              <Popconfirm title="Are you sure"
+              <Popconfirm title="Are you sure?"
                 okText="Yes"
                 cancelText="No"
                 onConfirm={this.removeTodo.bind(this, task.id)}

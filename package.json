@@ -1,5 +1,5 @@
 {
-  "name": "app-taks",
+  "name": "roomies-todo",
   "version": "0.1.0",
   "engines": {
     "node": "12.16.x"
